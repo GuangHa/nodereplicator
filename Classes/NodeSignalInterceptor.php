@@ -52,6 +52,15 @@ class NodeSignalInterceptor
         }
     }
 
+    public function nodeSpecialPropertyChanged(NodeInterface $node)
+    {
+        if (!self::hasReplicationConfiguration($node)) {
+            return;
+        }
+
+        self::getNodeReplicator()->updateSpecialProperties($node);
+    }
+
     protected static function hasReplicationConfiguration(NodeInterface $node): bool
     {
         return $node->getNodeType()->hasConfiguration('options.replication');

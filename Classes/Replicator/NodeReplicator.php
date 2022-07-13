@@ -78,6 +78,36 @@ class NodeReplicator
         }
     }
 
+    public function updateSpecialProperties(NodeInterface $node)
+    {
+        foreach ($this->getParentVariants($node) as $parentVariant) {
+            $variantNode = $parentVariant->getContext()->getNodeByIdentifier($node->getIdentifier());
+
+            if ($variantNode === null) {
+                $this->logReplicationAction($node, 'Node special properties was not updated, as the variant does not exist.', __METHOD__, LogLevel::DEBUG);
+                continue;
+            }
+
+            if ($node->getNodeType()->getConfiguration('properties._hiddenInIndex.options.replication.update') || $node->getNodeType()->getConfiguration('properties._hiddenInIndex.options.replication.updateEmptyOnly')) {
+                $variantNode->setHiddenInIndex($node->isHiddenInIndex());
+            }
+
+            if ($node->getNodeType()->getConfiguration('properties._hiddenBeforeDateTime.options.replication.update') || $node->getNodeType()->getConfiguration('properties._hiddenBeforeDateTime.options.replication.updateEmptyOnly')) {
+                $variantNode->setHiddenBeforeDateTime($node->getHiddenBeforeDateTime());
+            }
+
+            if ($node->getNodeType()->getConfiguration('properties._hiddenAfterDateTime.options.replication.update') || $node->getNodeType()->getConfiguration('properties._hiddenAfterDateTime.options.replication.updateEmptyOnly')) {
+                $variantNode->setHiddenAfterDateTime($node->getHiddenAfterDateTime());
+            }
+
+            if ($node->getNodeType()->getConfiguration('properties._hidden.options.replication.update') || $node->getNodeType()->getConfiguration('properties._hidden.options.replication.updateEmptyOnly')) {
+                $variantNode->setHidden($node->isHidden());
+            }
+
+            $this->logReplicationAction($node, 'Special properties of the node was updated', __METHOD__);
+        }
+    }
+
     /**
      * @param NodeInterface $node
      * @return NodeInterface[]
@@ -91,7 +121,7 @@ class NodeReplicator
         if ($node->getParent() === null) {
             return [];
         }
-        
+
         return $node->getParent()->getOtherNodeVariants();
     }
 
