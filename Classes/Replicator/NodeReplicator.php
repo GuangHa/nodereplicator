@@ -89,19 +89,27 @@ class NodeReplicator
             }
 
             if ($node->getNodeType()->getConfiguration('properties._hiddenInIndex.options.replication.update') || $node->getNodeType()->getConfiguration('properties._hiddenInIndex.options.replication.updateEmptyOnly')) {
-                $variantNode->setHiddenInIndex($node->isHiddenInIndex());
+                if ($variantNode->isHiddenInIndex() !== $node->isHiddenInIndex()) {
+                    $variantNode->setHiddenInIndex($node->isHiddenInIndex());
+                }
             }
 
             if ($node->getNodeType()->getConfiguration('properties._hiddenBeforeDateTime.options.replication.update') || $node->getNodeType()->getConfiguration('properties._hiddenBeforeDateTime.options.replication.updateEmptyOnly')) {
-                $variantNode->setHiddenBeforeDateTime($node->getHiddenBeforeDateTime());
+                if ($variantNode->getHiddenBeforeDateTime() !== $node->getHiddenBeforeDateTime()) {
+                    $variantNode->setHiddenBeforeDateTime($node->getHiddenBeforeDateTime());
+                }
             }
 
             if ($node->getNodeType()->getConfiguration('properties._hiddenAfterDateTime.options.replication.update') || $node->getNodeType()->getConfiguration('properties._hiddenAfterDateTime.options.replication.updateEmptyOnly')) {
-                $variantNode->setHiddenAfterDateTime($node->getHiddenAfterDateTime());
+                if ($variantNode->getHiddenAfterDateTime() !== $node->getHiddenAfterDateTime()) {
+                    $variantNode->setHiddenAfterDateTime($node->getHiddenAfterDateTime());
+                }
             }
 
             if ($node->getNodeType()->getConfiguration('properties._hidden.options.replication.update') || $node->getNodeType()->getConfiguration('properties._hidden.options.replication.updateEmptyOnly')) {
-                $variantNode->setHidden($node->isHidden());
+                if ($variantNode->isHidden() !== $node->isHidden()) {
+                    $variantNode->setHidden($node->isHidden());
+                }
             }
 
             $this->logReplicationAction($node, 'Special properties of the node was updated', __METHOD__);
