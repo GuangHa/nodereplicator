@@ -29,14 +29,14 @@ class NodeSignalInterceptor
         }
     }
 
-    public function nodeRemoved(NodeInterface $node): void
+    public static function nodeRemoved(NodeInterface $node): void
     {
         if (self::hasReplicationConfiguration($node) && self::nodeRemoveReplicationEnabled($node)) {
             self::getNodeReplicator()->removeNodeVariants($node);
         }
     }
 
-    public function nodePropertyChanged(NodeInterface $node, string $propertyName, $oldValue, $newValue): void
+    public static function nodePropertyChanged(NodeInterface $node, string $propertyName, $oldValue, $newValue): void
     {
         if (!self::hasReplicationConfiguration($node)) {
             return;
@@ -52,7 +52,7 @@ class NodeSignalInterceptor
         }
     }
 
-    public function nodeSpecialPropertyChanged(NodeInterface $node)
+    public static function nodeSpecialPropertyChanged(NodeInterface $node)
     {
         if (!self::hasReplicationConfiguration($node)) {
             return;
