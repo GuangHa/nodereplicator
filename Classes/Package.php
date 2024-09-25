@@ -28,5 +28,6 @@ class Package extends BasePackage
         $dispatcher->connect(Node::class, 'nodeAdded', NodeSignalInterceptor::class, '::nodeAdded');
         $dispatcher->connect(Node::class, 'nodePropertyChanged', NodeSignalInterceptor::class, '::nodePropertyChanged');
         $dispatcher->connect(Node::class, 'nodeRemoved', NodeSignalInterceptor::class, '::nodeRemoved');
+        $dispatcher->connect(Node::class, 'nodeUpdated', NodeSignalInterceptor::class, '::nodeSpecialPropertyChanged');
     }
 }
